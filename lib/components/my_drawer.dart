@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minmalecommerce/components/my_list_tile.dart';
 import 'package:minmalecommerce/pages/about_page.dart';
+import 'package:minmalecommerce/pages/auth_page.dart';
 import 'package:minmalecommerce/pages/cart_page.dart';
 import 'package:minmalecommerce/pages/settings_page.dart';
 import 'package:minmalecommerce/utils/utils.dart';
@@ -13,9 +14,14 @@ class MyDrawer extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  void signUserOut() {
-    googleSignIn.signOut();
-    FirebaseAuth.instance.signOut();
+  void signUserOut(BuildContext context) async {
+    await googleSignIn.signOut();
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AuthPage()), // Navigate to AuthPage
+    );
   }
 
   @override
@@ -80,7 +86,7 @@ class MyDrawer extends StatelessWidget {
               text: "Log Out",
               icon: Icons.logout,
               onTap: () {
-                signUserOut();
+                signUserOut(context);
               },
             ),
           ),
